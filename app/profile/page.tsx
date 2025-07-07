@@ -1,17 +1,21 @@
 import { createClient } from "@/utils/supabase/server";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { AuthButton } from "@/components/AuthButton";
-import { updateProfile } from "@/app/actions";
+import { updateProfile } from "@/app/actions"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { redirect } from 'next/navigation';
 
 export default async function ProfilePage() {
-  const supabase = await createClient();
+  const supabase = createClient();
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await (await supabase).auth.getUser();
+  if (!user) {
+    redirect('/login');
+  }
 
-  // Fetch the user's profile data
-  const { data: profile } = await supabase
+  const { data: profile } = await (await supabase)
     .from('profiles')
     .select('*')
+    .eq('id', user.id)
     .single();
 
   return (
