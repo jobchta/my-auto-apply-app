@@ -4,7 +4,8 @@ import JobCard, { type Job } from '@/components/dashboard/JobCard'
 import { createClient } from '@/utils/supabase/server'
 
 export default async function Index() {
-  const supabase = createClient()
+  // Add the 'await' keyword here
+  const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -47,7 +48,7 @@ export default async function Index() {
         </nav>
         <main className="flex-1 flex flex-col gap-6 items-center justify-center">
           <h1 className="text-5xl font-bold">JobCHTA.ai</h1>
-          <p className="text-xl">The last job search you'll ever do. Log in to get started.</p>
+          <p className="text-xl">The last job search you&apos;ll ever do. Log in to get started.</p>
         </main>
     </div>
   )
