@@ -1,21 +1,28 @@
 import { createClient } from "@/utils/supabase/server";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { AuthButton } from "@/components/AuthButton";
-import { updateProfile } from "@/app/actions"; // eslint-disable-line @typescript-eslint/no-unused-vars
-import { redirect } from 'next/navigation';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+import { updateProfile } from "@/app/actions";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
-  const { data: { user } } = await (await supabase).auth.getUser();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // If no user is logged in, send them to the login page
   if (!user) {
     redirect('/login');
   }
 
-  const { data: profile } = await (await supabase)
+  // Fetch the user's profile data
+  const { data: profile } = await supabase
     .from('profiles')
     .select('*')
-    .eq('id', user.id)
     .single();
 
   return (
@@ -31,51 +38,51 @@ export default async function ProfilePage() {
         </p>
 
         {/* The form now calls the updateProfile server action */}
-        <form method="post" action="/api/update-profile" className="space-y-6">
+        <form action={updateProfile} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-            <input 
-              type="email" 
-              name="email" 
-              id="email" 
-              defaultValue={profile?.email || ''} 
-              disabled 
-              className="w-full bg-gray-900 border border-gray-700 rounded-md shadow-sm py-2 px-3 text-gray-400" 
+            <input
+              type="email"
+              name="email"
+              id="email"
+              defaultValue={profile?.email || ''}
+              disabled
+              className="w-full bg-gray-900 border border-gray-700 rounded-md shadow-sm py-2 px-3 text-gray-400"
             />
           </div>
           <div>
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-            <input 
-              type="text" 
-              name="fullName" 
-              id="fullName" 
-              defaultValue={profile?.full_name || ''} 
-              className="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+            <input
+              type="text"
+              name="fullName"
+              id="fullName"
+              defaultValue={profile?.full_name || ''}
+              className="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
-            <input 
-              type="text" 
-              name="phone" 
-              id="phone" 
-              defaultValue={profile?.phone || ''} 
-              className="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+            <input
+              type="text"
+              name="phone"
+              id="phone"
+              defaultValue={profile?.phone || ''}
+              className="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
            <div>
             <label htmlFor="resumeUrl" className="block text-sm font-medium text-gray-300 mb-2">Resume URL (must be a public link)</label>
-            <input 
-              type="text" 
-              name="resumeUrl" 
-              id="resumeUrl" 
-              defaultValue={profile?.resume_url || ''} 
-              className="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+            <input
+              type="text"
+              name="resumeUrl"
+              id="resumeUrl"
+              defaultValue={profile?.resume_url || ''}
+              className="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="mt-8">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-colors duration-200"
             >
               Save Profile
