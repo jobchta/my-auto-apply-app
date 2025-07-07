@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -7,10 +9,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <nav>
             <ul>
               <li className="mb-4">
-                <a href="/" className="text-lg font-bold text-white bg-gray-700 p-2 rounded-md block">Dashboard</a>
+                <Link href="/" className="text-lg font-bold text-white bg-gray-700 p-2 rounded-md block">
+                  Dashboard
+                </Link>
               </li>
               <li className="mb-4">
-                <a href="/profile" className="text-lg text-gray-400 hover:text-white">Profile</a>
+                <Link href="/profile" className="text-lg text-gray-400 hover:text-white">
+                  Profile
+                </Link>
               </li>
               <li className="mb-4">
                 <a href="#" className="text-lg text-gray-400 hover:text-white">Account</a>
